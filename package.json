@@ -1,0 +1,19 @@
+{
+  "name": "fullstack-form",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier --write . --config ./.prettierrc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stkrolikiewicz/fullstack-form.git"
+  },
+  "author": "Stanisław Królikiewicz <stan@stanbyte.com>",
+  "license": "ISC",
+  "homepage": "https://github.com/stkrolikiewicz/fullstack-form#readme",
+  "devDependencies": {
+    "prettier": "^3.0.3"
+  }
+}

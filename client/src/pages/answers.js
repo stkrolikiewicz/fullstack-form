@@ -1,24 +1,42 @@
 import Head from 'next/head';
 import {useEffect, useState} from 'react';
 import {getAnswers} from '@/services/answers';
+import {Progress} from '@chakra-ui/react';
+import {Alert as MyAlert} from '@/components';
 
 export const getServerSideProps = async () => {
-  const {data} = await getAnswers();
-  console.log(data);
-  return {
-    props: {
-      data,
-    },
-  };
+  try {
+    const {data} = await getAnswers();
+    console.log(data);
+    return {
+      props: {
+        data,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching answers:', error);
+    return {
+      props: {
+        error: {
+          message: error.message || 'Unknown error',
+        },
+      },
+    };
+  }
 };
 
-export default function Home({data}) {
+export default function Home({data, error}) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log(data);
-    setLoading(false);
-  }, [data]);
+    if (data) {
+      console.log(data);
+      setLoading(false);
+    } else if (error) {
+      console.error('Error loading data:', error);
+      setLoading(false);
+    }
+  }, [data, error]);
 
   return (
     <>
@@ -29,14 +47,22 @@ export default function Home({data}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <h1>Provided answers</h1>
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <ul>
-            {data &&
-              data.map(item => <li key={item._id}>{item.firstField}</li>)}
-          </ul>
+        {error && (
+          <MyAlert
+            status="error"
+            title="Error loading data:"
+            description={error.message || 'Unknown error'}
+          />
+        )}
+        {loading && <Progress size="xs" isIndeterminate />}
+        {data && (
+          <div>
+            <h1>Provided answers</h1>
+            <ul>
+              {data &&
+                data.map(item => <li key={item._id}>{item.firstField}</li>)}
+            </ul>
+          </div>
         )}
       </main>
     </>

@@ -2,7 +2,7 @@ import Head from 'next/head';
 import {useEffect, useState} from 'react';
 import {getAnswers} from '@/services/answers';
 import {Progress} from '@chakra-ui/react';
-import {Alert as MyAlert} from '@/components';
+import {Alert as MyAlert, AnswersList} from '@/components';
 import {RepeatIcon} from '@chakra-ui/icons';
 
 export const getServerSideProps = async () => {
@@ -47,32 +47,24 @@ export default function Home({data, error}) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      {error && (
+        <MyAlert
+          status="error"
+          title="Error loading data:"
+          description={error.message || 'Unknown error'}
+          enterState={error}
+          disappear={false}
+          action={() => {
+            window.location.reload();
+          }}
+          buttonColorScheme="red"
+          buttonContent="Reload the page"
+          buttonIcon={<RepeatIcon />}
+        />
+      )}
       <main>
-        {error && (
-          <MyAlert
-            status="error"
-            title="Error loading data:"
-            description={error.message || 'Unknown error'}
-            enterState={error}
-            disappear={false}
-            action={() => {
-              window.location.reload();
-            }}
-            buttonColorScheme="red"
-            buttonContent="Reload the page"
-            buttonIcon={<RepeatIcon />}
-          />
-        )}
         {loading && <Progress size="xs" isIndeterminate />}
-        {data && (
-          <div>
-            <h1>Provided answers</h1>
-            <ul>
-              {data &&
-                data.map(item => <li key={item._id}>{item.firstField}</li>)}
-            </ul>
-          </div>
-        )}
+        {data && <AnswersList data={data} />}
       </main>
     </>
   );

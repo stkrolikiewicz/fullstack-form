@@ -9,7 +9,7 @@ export default ({data}) => {
       </Heading>
       <Accordion allowToggle>
         {data.map(item => (
-          <MyListItem item={item} />
+          <MyListItem item={item} key={item._id} />
         ))}
       </Accordion>
     </Box>

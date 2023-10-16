@@ -50,6 +50,9 @@ export default ({
                   aria-label={buttonContent}
                   icon={buttonIcon}
                   colorScheme={buttonColorScheme}
+                  onClick={() => {
+                    action();
+                  }}
                 />
               ) : (
                 <Button

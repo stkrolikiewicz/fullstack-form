@@ -3,8 +3,8 @@ export const validateField = (fieldName, fieldValue) => {
 
   if (!fieldValue) {
     errors[fieldName] = 'This answer is required';
-  } else if (fieldValue.length < 2 || fieldValue.length > 70) {
-    errors[fieldName] = 'This answer must be between 2 and 70 characters';
+  } else if (fieldValue.length < 2 || fieldValue.length > 150) {
+    errors[fieldName] = 'This answer must be between 2 and 150 characters';
   }
 
   return errors;

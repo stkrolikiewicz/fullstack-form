@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react';
 import {getAnswers} from '@/services/answers';
 import {Progress} from '@chakra-ui/react';
 import {Alert as MyAlert} from '@/components';
+import {RepeatIcon} from '@chakra-ui/icons';
 
 export const getServerSideProps = async () => {
   try {
@@ -52,6 +53,14 @@ export default function Home({data, error}) {
             status="error"
             title="Error loading data:"
             description={error.message || 'Unknown error'}
+            enterState={error}
+            disappear={false}
+            action={() => {
+              window.location.reload();
+            }}
+            buttonColorScheme="red"
+            buttonContent="Reload the page"
+            buttonIcon={<RepeatIcon />}
           />
         )}
         {loading && <Progress size="xs" isIndeterminate />}

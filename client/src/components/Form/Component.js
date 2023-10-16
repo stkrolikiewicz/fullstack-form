@@ -1,6 +1,6 @@
 import {postAnswer} from '@/services/answers';
 import {Formik} from 'formik';
-import {Box, Button, VStack, Spinner} from '@chakra-ui/react';
+import {Box, Button, VStack, Spinner, Slide} from '@chakra-ui/react';
 import {FormControl as MyFormControl} from './_components';
 import {fields, initialValues} from './_constants';
 import {validateField} from './_utils';
@@ -25,12 +25,13 @@ export default () => {
   };
 
   return (
-    <Box bg="white" p={6} rounded="md" w={64}>
+    <Box bg="white" p={6} rounded="md" w={600}>
       {error && (
         <MyAlert
           status="error"
           title="Error submitting form:"
           description={error.message || 'Unknown error'}
+          enterState={error}
         />
       )}
       <Formik

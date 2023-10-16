@@ -16,7 +16,7 @@ export default ({item}) => {
     <AccordionItem>
       <h2>
         <AccordionButton>
-          <Box as="span" flex="1" textAlign="left">
+          <Box flex="1" textAlign="left">
             Answer {item._id}
           </Box>
           <AccordionIcon />

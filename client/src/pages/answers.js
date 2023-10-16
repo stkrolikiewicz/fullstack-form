@@ -2,7 +2,7 @@ import Head from 'next/head';
 import {useEffect, useState} from 'react';
 import {getAnswers} from '@/services/answers';
 import {Progress} from '@chakra-ui/react';
-import {Alert as MyAlert, AnswersList} from '@/components';
+import {Alert as MyAlert, AnswersList, Layout} from '@/components';
 import {RepeatIcon} from '@chakra-ui/icons';
 
 export const getServerSideProps = async () => {
@@ -50,7 +50,7 @@ export default function Home({data, error}) {
       {error && (
         <MyAlert
           status="error"
-          title="Error loading data:"
+          title="Error loading data"
           description={error.message || 'Unknown error'}
           enterState={error}
           disappear={false}
@@ -60,12 +60,13 @@ export default function Home({data, error}) {
           buttonColorScheme="red"
           buttonContent="Reload the page"
           buttonIcon={<RepeatIcon />}
+          closeButton={true}
         />
       )}
-      <main>
+      <Layout>
         {loading && <Progress size="xs" isIndeterminate />}
         {data && <AnswersList data={data} />}
-      </main>
+      </Layout>
     </>
   );
 }

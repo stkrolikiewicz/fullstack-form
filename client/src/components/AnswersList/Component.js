@@ -3,7 +3,7 @@ import {AccordionItem as MyListItem} from './_components';
 
 export default ({data}) => {
   return (
-    <Box>
+    <Box w="100%">
       <Heading as="h1" size="lg" m={4}>
         Provided answers
       </Heading>

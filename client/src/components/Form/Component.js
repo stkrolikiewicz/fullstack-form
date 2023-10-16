@@ -1,6 +1,13 @@
 import {postAnswer} from '@/services/answers';
 import {Formik} from 'formik';
-import {Box, Button, VStack, Spinner, Heading} from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  VStack,
+  Spinner,
+  Heading,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import {FormControl as MyFormControl} from './_components';
 import {validateField} from '@/utils';
 import {useState} from 'react';
@@ -10,6 +17,7 @@ export default ({title, fields, initialValues}) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const bg = useColorModeValue('whiteAlpha.500', 'whiteAlpha.100');
 
   const handleSubmit = async (values, resetForm) => {
     setLoading(true);
@@ -27,7 +35,7 @@ export default ({title, fields, initialValues}) => {
   };
 
   return (
-    <Box bg="white" p={6} rounded="md" w={600}>
+    <>
       {error && (
         <MyAlert
           status="error"
@@ -45,52 +53,54 @@ export default ({title, fields, initialValues}) => {
           duration={5000}
         />
       )}
-      {title && (
-        <Heading as="h2" size="lg" mb={4} textAlign={'center'}>
-          {title}
-        </Heading>
-      )}
-      <Formik
-        initialValues={initialValues}
-        onSubmit={(values, {resetForm}) => {
-          handleSubmit(values, resetForm);
-        }}
-        validate={values => {
-          const fieldNames = fields.map(field => field.name);
-
-          const errors = fieldNames.reduce((acc, fieldName) => {
-            return {
-              ...acc,
-              ...validateField(fieldName, values[fieldName]),
-            };
-          }, {});
-          return errors;
-        }}
-      >
-        {({handleSubmit, errors, touched}) => (
-          <form onSubmit={handleSubmit}>
-            <VStack spacing={4} align="flex-start">
-              {fields.map(({name, label}) => (
-                <MyFormControl
-                  key={name}
-                  name={name}
-                  label={label}
-                  errors={errors}
-                  touched={touched}
-                />
-              ))}
-              <Button
-                type="submit"
-                colorScheme="purple"
-                width="full"
-                disabled={loading}
-              >
-                {loading ? <Spinner /> : 'Submit'}
-              </Button>
-            </VStack>
-          </form>
+      <Box bg={bg} backdropFilter="blur(10px)" p={6} rounded="md" w={600}>
+        {title && (
+          <Heading as="h2" size="lg" mb={4} textAlign={'center'}>
+            {title}
+          </Heading>
         )}
-      </Formik>
-    </Box>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={(values, {resetForm}) => {
+            handleSubmit(values, resetForm);
+          }}
+          validate={values => {
+            const fieldNames = fields.map(field => field.name);
+
+            const errors = fieldNames.reduce((acc, fieldName) => {
+              return {
+                ...acc,
+                ...validateField(fieldName, values[fieldName]),
+              };
+            }, {});
+            return errors;
+          }}
+        >
+          {({handleSubmit, errors, touched}) => (
+            <form onSubmit={handleSubmit}>
+              <VStack spacing={4} align="flex-start">
+                {fields.map(({name, label}) => (
+                  <MyFormControl
+                    key={name}
+                    name={name}
+                    label={label}
+                    errors={errors}
+                    touched={touched}
+                  />
+                ))}
+                <Button
+                  type="submit"
+                  colorScheme="purple"
+                  width="full"
+                  disabled={loading}
+                >
+                  {loading ? <Spinner /> : 'Submit'}
+                </Button>
+              </VStack>
+            </form>
+          )}
+        </Formik>
+      </Box>
+    </>
   );
 };
